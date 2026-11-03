@@ -1,4 +1,4 @@
-ent-MobWormTier1 = кровавый червь
+﻿ent-MobWormTier1 = кровавый червь
     .desc = Маленький кроваво-красный червяк.
 
 ent-MobWormTier2 = кровавый червь
@@ -68,6 +68,7 @@ worm-corpse-fail-drinking = Нельзя вселиться, пока вы пь�
 worm-corpse-fail-evolving = Нельзя вселиться во время эволюции.
 worm-corpse-fail-reproducing = Нельзя вселиться во время размножения.
 worm-corpse-fail-occupied = Этот труп уже занят.
+worm-corpse-fail-worm = Нельзя вселиться в другого червя.
 worm-corpse-fail-invalid = Сюда нельзя вселиться.
 worm-corpse-fail-not-dead = Цель должна быть мёртвой.
 worm-corpse-fail-cooldown = Нужно подождать перед повторным вселением.
@@ -79,7 +80,7 @@ ent-ActionWormEvolution = Эволюция
 
 worm-evolution-weaving = Вьёт кокон
 
-worm-evolution-fail-blood = Недостаточно крови для эволюции.
+worm-evolution-fail-blood = Недостаточно крови для эволюции. (Требуется: {$cost})
 worm-evolution-fail-vent = Нельзя эволюционировать, находясь в вентиляции.
 worm-evolution-fail-door = Нельзя эволюционировать, пока вы прячетесь в шлюзе.
 worm-evolution-fail-corpse = Нельзя эволюционировать, пока вы вселены в труп.
@@ -107,7 +108,7 @@ ent-ActionWormReproduction = Размножение
 
 worm-reproduction-weaving = Вьёт кокон
 
-worm-reproduction-fail-blood = Недостаточно крови для размножения.
+worm-reproduction-fail-blood = Недостаточно крови для размножения. (Требуется: {$cost})
 worm-reproduction-fail-vent = Нельзя размножаться, находясь в вентиляции.
 worm-reproduction-fail-door = Нельзя размножаться, пока вы прячетесь в шлюзе.
 worm-reproduction-fail-corpse = Нельзя размножаться, пока вы вселены в труп.

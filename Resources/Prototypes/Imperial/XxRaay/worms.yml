@@ -91,10 +91,7 @@
       30: Critical
       60: Dead
 - type: entity
-  parent:
-  - MobWormBase
-  - MobAtmosStandard
-  - MobRespirator
+  parent: MobWormBase
   id: MobWormTier1
   suffix: XxRaay, Кровавый червь I
   name: Blood Worm
@@ -157,7 +154,7 @@
     enterDelay: 10
     exitBleedDamage:
       types:
-        Bloodloss: 200
+        Piercing: 200
     enterCooldown: 180
   - type: ImperialVentCrawler
     enterDelay: 2
@@ -177,7 +174,7 @@
     disableActions: true
     removeComplexInteraction: true
     revealPipeNetwork: true
-    pipeRevealRange: 24
+    pipeRevealRange: 1
     hiddenVisibilityLayer: 1
     crawlVisibilityLayer: 16
     eyeSeeSubfloor: true
@@ -255,8 +252,31 @@
     enterDelay: 10
     exitBleedDamage:
       types:
-        Bloodloss: 200
+        Piercing: 200
     enterCooldown: 180
+  - type: ImperialVentCrawler
+    enterDelay: 2
+    exitDelay: 2
+    ventSpeedMultiplier: 1.5
+    moveSound:
+      collection: FootstepSCPMTF
+    moveSoundInterval: 1.5
+    enterVerb: vent-crawler-verb-enter
+    exitVerb: vent-crawler-verb-exit
+    enterVerbIcon: /Textures/Interface/VerbIcons/open.svg.192dpi.png
+    exitVerbIcon: /Textures/Interface/VerbIcons/eject.svg.192dpi.png
+    enterVerbPriority: 1
+    exitVerbPriority: 2
+    useStealth: true
+    stealthVisibility: -1
+    disableActions: true
+    removeComplexInteraction: true
+    revealPipeNetwork: true
+    pipeRevealRange: 1
+    hiddenVisibilityLayer: 1
+    crawlVisibilityLayer: 16
+    eyeSeeSubfloor: true
+    eyeSeeCrawlVisibilityLayer: true
   - type: WormDoorHider
     enterDelay: 2
     useStealth: true
@@ -335,3 +355,4 @@
     offspringCount: 3
     parentResultProto: MobWormTier1
     sourceProto: MobWormTier3
+

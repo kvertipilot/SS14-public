@@ -42,42 +42,53 @@ public sealed class ImperialVentCrawlerSystem : SharedImperialVentCrawlerSystem
             crawler.RevealPipeNetwork &&
             crawler.PipeRevealRange > 0f;
 
-        if (_timing.CurTime >= _nextPipeRefresh)
+        if (!active)
+        {
+            if (_current.Count > 0)
+                ClearRevealed();
+            return;
+        }
+
+        if (_timing.CurTime >= _nextPipeRefresh && TryComp(player, out TransformComponent? playerXform))
         {
             _nextPipeRefresh = _timing.CurTime + PipeRevealRefresh;
 
-            if (active && TryComp(player, out TransformComponent? playerXform))
-            {
-                var comp = Comp<ImperialVentCrawlerComponent>(player.Value);
-                _inRange.Clear();
-                var playerPos = _transform.GetWorldPosition(playerXform);
-                _lookup.GetEntitiesInRange(playerXform.MapID, playerPos, comp.PipeRevealRange, _inRange, flags: TrayScannerSystem.Flags);
+            var comp = Comp<ImperialVentCrawlerComponent>(player.Value);
+            _inRange.Clear();
+            var playerPos = _transform.GetWorldPosition(playerXform);
+            _lookup.GetEntitiesInRange(playerXform.MapID, playerPos, comp.PipeRevealRange, _inRange, flags: TrayScannerSystem.Flags);
 
-                _current.Clear();
-                foreach (var (uid, _) in _inRange)
-                {
-                    _current.Add(uid);
-                    EnsureComp<ImperialVentCrawlerRevealedComponent>(uid);
-                }
-            }
-            else
+            var newSet = new HashSet<EntityUid>();
+            foreach (var (uid, _) in _inRange)
             {
-                _current.Clear();
+                newSet.Add(uid);
+                if (_current.Add(uid))
+                    EnsureComp<ImperialVentCrawlerRevealedComponent>(uid);
+            }
+
+            var toRemove = new List<EntityUid>();
+            foreach (var uid in _current)
+            {
+                if (newSet.Contains(uid))
+                    continue;
+
+                SetRevealed(uid, false);
+                RemCompDeferred<ImperialVentCrawlerRevealedComponent>(uid);
+                toRemove.Add(uid);
+            }
+
+            foreach (var uid in toRemove)
+            {
+                _current.Remove(uid);
             }
         }
 
-        var revealedQuery = AllEntityQuery<ImperialVentCrawlerRevealedComponent>();
-        while (revealedQuery.MoveNext(out var uid, out _))
+        foreach (var uid in _current)
         {
-            if (active && _current.Contains(uid))
-            {
-                SetRevealed(uid, true);
-            }
-            else
-            {
-                SetRevealed(uid, false);
-                RemCompDeferred<ImperialVentCrawlerRevealedComponent>(uid);
-            }
+            if (TerminatingOrDeleted(uid))
+                continue;
+
+            SetRevealed(uid, true);
         }
     }
 
@@ -102,3 +113,4 @@ public sealed class ImperialVentCrawlerSystem : SharedImperialVentCrawlerSystem
         _appearance.SetData(uid, SubFloorVisuals.ScannerRevealed, value);
     }
 }
+
